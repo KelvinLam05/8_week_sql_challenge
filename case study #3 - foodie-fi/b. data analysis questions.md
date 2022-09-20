@@ -1,4 +1,4 @@
-**1. How many customers has Foodie-Fi ever had?**
+### 1. How many customers has Foodie-Fi ever had?
 
 ```` sql
 
@@ -12,7 +12,7 @@ FROM subscriptions;
 | ----- |
 | 1000  |
 
-**2. What is the monthly distribution of trial plan start_date values for our dataset - use the start of the month as the group by value**
+### 2. What is the monthly distribution of trial plan start_date values for our dataset - use the start of the month as the group by value
 
 ```` sql
 
@@ -44,6 +44,31 @@ ORDER BY month_number;
 | 10           | October    | 79                  |
 | 11           | November   | 75                  |
 | 12           | December   | 84                  |
+
+### 3. What plan start_date values occur after the year 2020 for our dataset? Show the breakdown by count of events for each plan_name
+
+```` sql
+
+SELECT 
+  plan_id, 
+  plan_name,
+  COUNT (*) AS events
+FROM subscriptions s
+JOIN plans p USING (plan_id)
+WHERE start_date >= '2021-01-01'
+GROUP BY 
+  plan_id, 
+  plan_name
+ORDER BY plan_id;
+
+````
+
+| plan_id | plan_name     | events |
+| ------- | ------------- | ------ |
+| 1       | basic monthly | 8      |
+| 2       | pro monthly   | 60     |
+| 3       | pro annual    | 63     |
+| 4       | churn         | 71     |
 
 
 
