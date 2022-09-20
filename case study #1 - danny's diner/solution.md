@@ -37,7 +37,7 @@ GROUP BY customer_id;
 | B           | 6            |
 | C           | 2            |
 
-### What was the first item from the menu purchased by each customer?
+### 3. What was the first item from the menu purchased by each customer?
 
 ````sql
 
@@ -71,4 +71,7 @@ GROUP BY
 | A           | sushi        |
 | B           | curry        |
 | C           | ramen        |
+
+**4. What is the most purchased item on the menu and how many times was it purchased by all customers?**
+
 
