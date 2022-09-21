@@ -102,3 +102,31 @@ ORDER BY customer_id;
 | 104         | Meatlovers | 3      |
 | 105         | Vegetarian | 1      |
 
+<br/>
+
+**6. What was the maximum number of pizzas delivered in a single order?**
+
+````sql
+
+WITH largest_single_order_cte AS
+(
+  
+SELECT 
+  order_id, 
+  COUNT(pizza_id) AS order_size
+FROM customer_orders AS c
+JOIN runner_orders AS r USING(order_id)
+GROUP BY order_id
+
+)
+
+SELECT MAX(order_size) AS largest_single_order
+FROM largest_single_order_cte;
+
+````
+
+| largest_single_order |
+| -------------------- |
+| 3                    |
+
+<br/>
