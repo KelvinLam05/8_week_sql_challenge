@@ -1,4 +1,4 @@
-### 1. What is the total amount each customer spent at the restaurant?
+**1. What is the total amount each customer spent at the restaurant?**
 
 ````sql
 
@@ -18,7 +18,9 @@ ORDER BY customer_id;
 | B           | 74          |
 | C           | 36          |
 
-### 2. How many days has each customer visited the restaurant?
+<br/>
+
+ **2. How many days has each customer visited the restaurant?**
 
 ````sql
 
@@ -37,7 +39,9 @@ GROUP BY customer_id;
 | B           | 6            |
 | C           | 2            |
 
-### 3. What was the first item from the menu purchased by each customer?
+<br/>
+
+**3. What was the first item from the menu purchased by each customer?**
 
 ````sql
 
@@ -72,6 +76,6 @@ GROUP BY
 | B           | curry        |
 | C           | ramen        |
 
-**4. What is the most purchased item on the menu and how many times was it purchased by all customers?**
+### 4. What is the most purchased item on the menu and how many times was it purchased by all customers?
 
 
