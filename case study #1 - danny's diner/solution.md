@@ -131,3 +131,41 @@ ORDER BY customer_id;
 | ----------- | ------------------------ | ------------ |
 | A           | 2021-01-07T00:00:00.000Z | curry        |
 | B           | 2021-01-11T00:00:00.000Z | sushi        |
+
+<br/>
+
+**7. Which item was purchased just before the customer became a member?**
+
+````sql
+
+WITH prior_customers_purchased AS
+(
+
+SELECT 
+  customer_id,
+  join_date,
+  order_date,
+  product_id,
+  DENSE_RANK() OVER(PARTITION BY customer_id ORDER BY order_date DESC)
+FROM sales s
+JOIN members m USING(customer_id)
+WHERE order_date < join_date
+
+)
+
+SELECT customer_id, order_date, product_name
+FROM prior_customers_purchased p
+JOIN menu m USING(product_id)
+WHERE dense_rank = 1
+ORDER BY customer_id;
+
+````
+
+| customer_id | order_date               | product_name |
+| ----------- | ------------------------ | ------------ |
+| A           | 2021-01-01T00:00:00.000Z | sushi        |
+| A           | 2021-01-01T00:00:00.000Z | curry        |
+| B           | 2021-01-04T00:00:00.000Z | sushi        |
+
+
+
