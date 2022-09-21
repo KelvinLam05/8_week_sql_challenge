@@ -53,3 +53,52 @@ ORDER BY runner_id;
 <br/>
 
 **4. How many of each type of pizza was delivered?**
+
+````sql
+
+SELECT 
+  pizza_name, 
+  COUNT(pizza_id) AS orders
+FROM runner_orders r
+JOIN customer_orders c USING(order_id)
+JOIN pizza_names p USING(pizza_id)
+WHERE distance <> ''
+GROUP BY pizza_name;
+
+````
+
+| pizza_name | orders |
+| ---------- | ------ |
+| Meatlovers | 9      |
+| Vegetarian | 3      |
+
+<br/>
+
+**5. How many Vegetarian and Meatlovers were ordered by each customer?**
+
+````sql
+
+SELECT 
+  customer_id, 
+  pizza_name,
+  COUNT(pizza_name) AS orders
+FROM customer_orders c 
+JOIN pizza_names p USING(pizza_id)
+GROUP BY 
+  customer_id, 
+  pizza_name
+ORDER BY customer_id;
+
+````
+
+| customer_id | pizza_name | orders |
+| ----------- | ---------- | ------ |
+| 101         | Meatlovers | 2      |
+| 101         | Vegetarian | 1      |
+| 102         | Meatlovers | 2      |
+| 102         | Vegetarian | 1      |
+| 103         | Meatlovers | 3      |
+| 103         | Vegetarian | 1      |
+| 104         | Meatlovers | 3      |
+| 105         | Vegetarian | 1      |
+
