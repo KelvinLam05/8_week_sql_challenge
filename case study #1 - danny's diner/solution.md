@@ -167,5 +167,32 @@ ORDER BY customer_id;
 | A           | 2021-01-01T00:00:00.000Z | curry        |
 | B           | 2021-01-04T00:00:00.000Z | sushi        |
 
+<br/>
+
+**8. What is the total items and amount spent for each member before they became a member?**
+
+````sql
+
+SELECT 
+  customer_id,
+  COUNT(product_id) AS items_purchased,
+  SUM(price) AS total_spend
+FROM sales AS s
+JOIN members AS mm USING(customer_id)
+JOIN menu AS mn USING(product_id)
+WHERE order_date < join_date
+GROUP BY customer_id
+ORDER BY customer_id;
+
+````
+
+| customer_id | items_purchased | total_spend |
+| ----------- | --------------- | ----------- |
+| A           | 2               | 25          |
+| B           | 3               | 40          |
+
+<br/>
+
+**9. If each $1 spent equates to 10 points and sushi has a 2x points multiplier - how many points would each customer have?**
 
 
