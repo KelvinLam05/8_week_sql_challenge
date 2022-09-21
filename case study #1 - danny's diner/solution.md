@@ -53,7 +53,7 @@ SELECT
   order_date, 
   product_name, 
   DENSE_RANK() OVER(PARTITION BY customer_id ORDER BY order_date)
-FROM sales AS s
+FROM sales s
 JOIN menu m USING(product_id)
 
 )
@@ -76,6 +76,8 @@ GROUP BY
 | B           | curry        |
 | C           | ramen        |
 
-### 4. What is the most purchased item on the menu and how many times was it purchased by all customers?
+<br/>
+
+**4. What is the most purchased item on the menu and how many times was it purchased by all customers?**
 
 
