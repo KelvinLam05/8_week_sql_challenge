@@ -74,5 +74,57 @@ ORDER BY plan_id;
 | 3       | pro annual    | 63     |
 | 4       | churn         | 71     |
 
+<br/>
 
+**4. What is the customer count and percentage of customers who have churned rounded to 1 decimal place?**
 
+```` sql
+
+SELECT 
+  COUNT(customer_id) AS churners,
+  ROUND(100 * COUNT(customer_id)::NUMERIC / 
+    (SELECT COUNT(DISTINCT customer_id)
+    FROM subscriptions), 1) AS percentage_of_churners
+FROM subscriptions s
+JOIN plans p USING(plan_id)
+WHERE plan_id = 4;
+
+````
+
+| churners | percentage_of_churners |
+| -------- | ---------------------- |
+| 307      | 30.7                   |
+
+<br/>
+
+**5. How many customers have churned straight after their initial free trial - what percentage is this rounded to the nearest whole number?**
+
+```` sql
+
+WITH churned AS (
+
+SELECT 
+  *,  
+  ROW_NUMBER() OVER(PARTITION BY customer_id ORDER BY plan_id)
+FROM subscriptions s
+JOIN plans p USING(plan_id)
+
+)
+
+SELECT 
+  COUNT(*) AS churners,
+  ROUND(100 * COUNT(*) / 
+    (SELECT COUNT(DISTINCT customer_id) 
+    FROM subscriptions), 0) AS percentage_of_churners
+FROM churned
+WHERE plan_id = 4 AND row_number = 2;
+
+````
+
+| churners | percentage_of_churners |
+| -------- | ---------------------- |
+| 92       | 9                      |
+
+<br/>
+
+**6. What is the number and percentage of customer plans after their initial free trial?**
