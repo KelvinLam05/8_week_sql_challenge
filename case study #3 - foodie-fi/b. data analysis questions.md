@@ -131,3 +131,19 @@ WHERE plan_id = 4 AND row_number = 2;
 **6. What is the number and percentage of customer plans after their initial free trial?**
 
 **8. How many customers have upgraded to an annual plan in 2020?**
+
+```` sql
+
+SELECT 
+  COUNT(DISTINCT customer_id) AS number_of_customers
+FROM subscriptions
+WHERE plan_id = 3 AND start_date <= '2020-12-31';
+
+````
+
+| number_of_customers |
+| ------------------- |
+| 195                 |
+
+<br/>
+
