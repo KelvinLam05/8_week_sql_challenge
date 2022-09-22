@@ -101,7 +101,8 @@ WHERE plan_id = 4;
 
 ```` sql
 
-WITH churned AS (
+WITH churned AS 
+(
 
 SELECT 
   *,  
@@ -113,7 +114,7 @@ JOIN plans p USING(plan_id)
 
 SELECT 
   COUNT(*) AS churners,
-  ROUND(100 * COUNT(*) / 
+  ROUND(100 * COUNT(*)::NUMERIC / 
     (SELECT COUNT(DISTINCT customer_id) 
     FROM subscriptions), 0) AS percentage_of_churners
 FROM churned
