@@ -129,3 +129,5 @@ WHERE plan_id = 4 AND row_number = 2;
 <br/>
 
 **6. What is the number and percentage of customer plans after their initial free trial?**
+
+**8. How many customers have upgraded to an annual plan in 2020?**
