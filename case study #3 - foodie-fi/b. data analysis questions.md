@@ -130,6 +130,42 @@ WHERE plan_id = 4 AND row_number = 2;
 
 **6. What is the number and percentage of customer plans after their initial free trial?**
 
+```` sql
+
+WITH next_plan_cte AS
+(
+  
+SELECT 
+  customer_id, 
+  plan_id, 
+  LEAD(plan_id, 1) OVER(PARTITION BY customer_id 
+                        ORDER BY plan_id) 
+                        AS next_plan
+FROM subscriptions
+  
+)
+
+SELECT 
+  next_plan, 
+  COUNT(*) AS conversions,
+  ROUND(100 * COUNT(*)::NUMERIC / 
+    (SELECT COUNT(DISTINCT customer_id) 
+    FROM subscriptions), 1) AS conversion_rate
+FROM next_plan_cte
+WHERE plan_id = 0 AND next_plan IS NOT NULL
+GROUP BY next_plan;
+
+````
+
+| next_plan | conversions | conversion_rate |
+| --------- | ----------- | --------------- |
+| 1         | 546         | 54.6            |
+| 2         | 325         | 32.5            |
+| 3         | 37          | 3.7             |
+| 4         | 92          | 9.2             |
+
+<br/>
+
 **8. How many customers have upgraded to an annual plan in 2020?**
 
 ```` sql
