@@ -31,7 +31,7 @@ SELECT
     ELSE extras
     END AS extras,
   order_time
-FROM customer_orders;
+FROM pizza_runner.customer_orders;
 
 ````
 
@@ -90,9 +90,18 @@ SELECT
     WHEN cancellation IS NULL OR cancellation LIKE 'null' THEN ''
     ELSE cancellation
     END AS cancellation
-FROM runner_orders;
+FROM pizza_runner.runner_orders;
 
 ````
+```` sql
+
+ALTER TABLE pizza_runner.runner_orders
+CHANGE COLUMN pickup_time pickup_time DATETIME,
+CHANGE COLUMN distance distance DECIMAL(10, 2),
+CHANGE COLUMN duration duration INT;
+
+````
+
 | order_id | runner_id | pickup_time         | distance | duration | cancellation            |
 | -------- | --------- | ------------------- | -------- | -------- | ----------------------- |
 | 1        | 1         | 2020-01-01 18:15:34 | 20       | 32       |                         |
