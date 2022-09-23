@@ -220,3 +220,29 @@ JOIN annual_plan ap USING(customer_id);
 | ------------------- |
 | 105                 |
 
+<br/>
+
+**11. How many customers downgraded from a pro monthly to a basic monthly plan in 2020?**
+
+```` sql
+
+customer_id, 
+  plan_id, 
+  start_date,
+  LEAD(plan_id, 1) OVER(PARTITION BY customer_id 
+                        ORDER BY plan_id) 
+                        AS next_plan
+FROM subscriptions
+
+)
+
+SELECT 
+  COUNT(*) AS downgraded
+FROM next_plan_cte
+WHERE start_date <= '2020-12-31' AND plan_id = 2 AND next_plan = 1;
+
+````
+
+| downgraded |
+| ---------- |
+| 0          |
