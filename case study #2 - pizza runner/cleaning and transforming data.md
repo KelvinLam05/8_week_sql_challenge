@@ -97,7 +97,7 @@ FROM pizza_runner.runner_orders;
 
 ALTER TABLE pizza_runner.runner_orders
 CHANGE COLUMN pickup_time pickup_time DATETIME,
-CHANGE COLUMN distance distance DECIMAL(10, 2),
+CHANGE COLUMN distance distance DECIMAL(3, 1),
 CHANGE COLUMN duration duration INT;
 
 ````
