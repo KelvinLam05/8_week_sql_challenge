@@ -43,3 +43,29 @@ FROM unique_products_purchased_cte;
 
 **3. What are the 25th, 50th and 75th percentile values for the revenue per transaction?**
 
+ ````sql
+ 
+WITH revenue_per_transaction_cte AS
+(
+
+SELECT
+  txn_id,
+  SUM(qty * price) AS revenue
+FROM balanced_tree.sales
+GROUP BY txn_id
+  
+)
+
+SELECT
+	PERCENTILE_DISC(0.25) WITHIN GROUP(ORDER BY revenue) AS "25th percentile",
+	PERCENTILE_DISC(0.5) WITHIN GROUP(ORDER BY revenue) AS "50th percentile",
+	PERCENTILE_DISC(0.75) WITHIN GROUP(ORDER BY revenue) AS "75th percentile"
+FROM revenue_per_transaction_cte;
+
+````
+
+| 25th percentile | 50th percentile | 75th percentile |
+| --------------- | --------------- | --------------- |
+| 375             | 509             | 647             |
+
+<br/>
