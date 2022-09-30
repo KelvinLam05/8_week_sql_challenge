@@ -57,9 +57,9 @@ GROUP BY txn_id
 )
 
 SELECT
-	PERCENTILE_DISC(0.25) WITHIN GROUP(ORDER BY revenue) AS "25th percentile",
-	PERCENTILE_DISC(0.5) WITHIN GROUP(ORDER BY revenue) AS "50th percentile",
-	PERCENTILE_DISC(0.75) WITHIN GROUP(ORDER BY revenue) AS "75th percentile"
+  PERCENTILE_DISC(0.25) WITHIN GROUP(ORDER BY revenue) AS "25th percentile",
+  PERCENTILE_DISC(0.5) WITHIN GROUP(ORDER BY revenue) AS "50th percentile",
+  PERCENTILE_DISC(0.75) WITHIN GROUP(ORDER BY revenue) AS "75th percentile"
 FROM revenue_per_transaction_cte;
 
 ````
@@ -78,15 +78,15 @@ WITH discount_value_per_transaction AS
 (
 
 SELECT
-	txn_id,
-	SUM((qty * price) * (discount * 0.01)) AS total_discount_amount
+  txn_id,
+  SUM((qty * price) * (discount * 0.01)) AS total_discount_amount
 FROM balanced_tree.sales
 GROUP BY txn_id
 
 )
 
 SELECT 
-	ROUND(AVG(total_discount_amount), 2) AS average_discount_value
+  ROUND(AVG(total_discount_amount), 2) AS average_discount_value
 FROM discount_value_per_transaction;
 
 ````
