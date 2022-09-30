@@ -69,3 +69,5 @@ FROM revenue_per_transaction_cte;
 | 375             | 509             | 647             |
 
 <br/>
+
+**4. What is the average discount value per transaction?**
