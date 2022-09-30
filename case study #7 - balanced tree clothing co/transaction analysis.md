@@ -4,7 +4,7 @@
 
 SELECT 
   COUNT(DISTINCT txn_id) AS unique_transactions
-FROM balanced_tree.sales
+FROM balanced_tree.sales;
 
 ````
 
@@ -119,7 +119,7 @@ SELECT
   COUNT(*), 1) AS member_transactions,
   ROUND(100.0 * SUM(CASE WHEN member = 'false' THEN 1 ELSE 0 END) / 
   COUNT(*), 1) AS non_member_transaction
-FROM members_vs_non_members_cte
+FROM members_vs_non_members_cte;
 
 ````
 
