@@ -109,7 +109,69 @@ ORDER BY quantity DESC;
 
 <br/>
 
-**4. What is the percentage split of revenue by product for each segment?**
+**4. What is the total quantity, revenue and discount for each category?**
+
+````sql
+
+SELECT 
+  category_name,
+  SUM(qty) AS total_quantity, 
+  SUM(qty * s.price) AS total_revenue,
+  ROUND(SUM(qty * s.price * discount * 0.01)) AS total_discount 
+FROM balanced_tree.sales AS s
+JOIN balanced_tree.product_details AS d
+  ON s.prod_id = d.product_id
+GROUP BY 
+  category_id,
+  category_name;
+
+````
+
+| category_name | total_quantity | total_revenue | total_discount |
+| ------------- | -------------- | ------------- | -------------- |
+| Mens          | 22482          | 714120        | 86608          |
+| Womens        | 22734          | 575333        | 69621          |
+
+<br/>
+
+**5. What is the top selling product for each category?**
+
+````sql
+
+WITH ranking_cte AS
+(
+
+SELECT
+category_name,
+product_name,
+SUM(qty) AS total_quantity,
+DENSE_RANK() OVER(PARTITION BY category_name ORDER BY SUM(qty) DESC) AS ranking
+FROM balanced_tree.sales AS s
+JOIN balanced_tree.product_details AS d
+  ON s.prod_id = d.product_id
+GROUP BY
+  category_name,
+  product_name
+
+)
+
+SELECT 
+  category_name,
+  product_name,
+  total_quantity
+FROM ranking_cte
+WHERE ranking = 1; 
+
+````
+
+| category_name | product_name                 | total_quantity |
+| ------------- | ---------------------------- | -------------- |
+| Mens          | Blue Polo Shirt - Mens       | 3819           |
+| Womens        | Grey Fashion Jacket - Womens | 3876           |
+
+<br/>
+
+**6. What is the percentage split of revenue by product for each segment?**
 
 ````sql
 
