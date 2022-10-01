@@ -64,48 +64,38 @@ ORDER BY total_revenue DESC;
 
 ````sql
 
-WITH products_for_each_category AS
+WITH ranking_cte AS
 (
 
-SELECT 
-  category_name,
+SELECT
+  segment_name,
   product_name,
-  SUM(qty) AS quantity
+  SUM(qty) AS total_quantity,
+  DENSE_RANK() OVER(PARTITION BY segment_name ORDER BY SUM(qty) DESC) AS ranking
 FROM balanced_tree.sales AS s
 JOIN balanced_tree.product_details AS d
   ON s.prod_id = d.product_id
-GROUP BY 
-  category_name,
+GROUP BY
+  segment_name,
   product_name
-  
-),
-
-ranking_cte AS
-(
-
-SELECT 
-  category_name,
-  product_name,
-  quantity,
-  DENSE_RANK() OVER(PARTITION BY category_name ORDER BY quantity DESC) AS ranking
-FROM products_for_each_category
 
 )
 
-SELECT
-  category_name,
+SELECT 
+  segment_name,
   product_name,
-  quantity
+  total_quantity
 FROM ranking_cte
-WHERE ranking = 1
-ORDER BY quantity DESC;
+WHERE ranking = 1; 
 
 ````
 
-| category_name | product_name                 | quantity |
-| ------------- | ---------------------------- | -------- |
-| Womens        | Grey Fashion Jacket - Womens | 3876     |
-| Mens          | Blue Polo Shirt - Mens       | 3819     |
+| segment_name | product_name                  | total_quantity |
+| ------------ | ----------------------------- | -------------- |
+| Jacket       | Grey Fashion Jacket - Womens  | 3876           |
+| Jeans        | Navy Oversized Jeans - Womens | 3856           |
+| Shirt        | Blue Polo Shirt - Mens        | 3819           |
+| Socks        | Navy Solid Socks - Mens       | 3792           |
 
 <br/>
 
