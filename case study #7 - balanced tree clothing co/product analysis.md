@@ -157,3 +157,68 @@ FROM products_for_each_segment;
 
 **7. What is the percentage split of revenue by segment for each category?**
 
+````sql
+
+WITH segments_for_each_category AS
+(
+
+SELECT
+  category_name,  
+  segment_name,
+  SUM(qty * s.price) AS revenue
+FROM balanced_tree.sales AS s
+JOIN balanced_tree.product_details AS d
+  ON s.prod_id = d.product_id
+GROUP BY 
+  category_name,	
+  segment_name
+  
+)
+
+SELECT
+  category_name,
+  segment_name,
+  revenue,
+  ROUND((revenue / SUM(revenue) OVER(PARTITION BY category_name) * 100.0), 1) AS percentage
+FROM segments_for_each_category;
+
+````
+
+| category_name | segment_name | revenue | percentage |
+| ------------- | ------------ | ------- | ---------- |
+| Mens          | Socks        | 307977  | 43.1       |
+| Mens          | Shirt        | 406143  | 56.9       |
+| Womens        | Jeans        | 208350  | 36.2       |
+| Womens        | Jacket       | 366983  | 63.8       |
+
+<br/>
+
+**8. What is the percentage split of total revenue by category?**
+
+````sql
+
+WITH revenue_distribution_by_category AS
+(
+
+SELECT
+  category_name,  
+  SUM(qty * s.price) AS revenue
+FROM balanced_tree.sales AS s
+JOIN balanced_tree.product_details AS d
+  ON s.prod_id = d.product_id
+GROUP BY category_name
+
+)
+
+SELECT 
+  ROUND(100.0 * SUM(revenue) FILTER (WHERE category_name = 'Mens') / SUM(revenue) FILTER (WHERE category_name = 'Mens' OR category_name = 'Womens'), 1) AS mens_pct,
+  ROUND(100.0 * SUM(revenue) FILTER (WHERE category_name = 'Womens') / SUM(revenue) FILTER (WHERE category_name = 'Mens' OR category_name = 'Womens'), 1) AS womens_pct
+FROM revenue_distribution_by_category;
+
+````
+
+| mens_pct | womens_pct |
+| -------- | ---------- |
+| 55.4     | 44.6       |
+
+**9. What is the total transaction “penetration” for each product?**
