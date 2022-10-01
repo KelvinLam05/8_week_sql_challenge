@@ -138,20 +138,20 @@ FROM products_for_each_segment;
 
 ````
 
-| segment_name | product_name                     | percentage |
-| ------------ | -------------------------------- | ---------- |
-| Jacket       | Indigo Rain Jacket - Womens      | 19.5       |
-| Jacket       | Khaki Suit Jacket - Womens       | 23.5       |
-| Jacket       | Grey Fashion Jacket - Womens     | 57.0       |
-| Jeans        | Navy Oversized Jeans - Womens    | 24.1       |
-| Jeans        | Black Straight Jeans - Womens    | 58.1       |
-| Jeans        | Cream Relaxed Jeans - Womens     | 17.8       |
-| Shirt        | White Tee Shirt - Mens           | 37.4       |
-| Shirt        | Blue Polo Shirt - Mens           | 53.6       |
-| Shirt        | Teal Button Up Shirt - Mens      | 9.0        |
-| Socks        | Navy Solid Socks - Mens          | 44.3       |
-| Socks        | White Striped Socks - Mens       | 20.2       |
-| Socks        | Pink Fluro Polkadot Socks - Mens | 35.5       |
+| segment_name | product_name                     | revenue | percentage |
+| ------------ | -------------------------------- | ------- | ---------- |
+| Jacket       | Indigo Rain Jacket - Womens      | 71383   | 19.5       |
+| Jacket       | Khaki Suit Jacket - Womens       | 86296   | 23.5       |
+| Jacket       | Grey Fashion Jacket - Womens     | 209304  | 57.0       |
+| Jeans        | Navy Oversized Jeans - Womens    | 50128   | 24.1       |
+| Jeans        | Black Straight Jeans - Womens    | 121152  | 58.1       |
+| Jeans        | Cream Relaxed Jeans - Womens     | 37070   | 17.8       |
+| Shirt        | White Tee Shirt - Mens           | 152000  | 37.4       |
+| Shirt        | Blue Polo Shirt - Mens           | 217683  | 53.6       |
+| Shirt        | Teal Button Up Shirt - Mens      | 36460   | 9.0        |
+| Socks        | Navy Solid Socks - Mens          | 136512  | 44.3       |
+| Socks        | White Striped Socks - Mens       | 62135   | 20.2       |
+| Socks        | Pink Fluro Polkadot Socks - Mens | 109330  | 35.5       |
 
 <br/>
 
