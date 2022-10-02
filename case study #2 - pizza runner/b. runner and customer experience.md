@@ -69,3 +69,38 @@ ORDER BY preparation_time_in_minutes DESC;
 | 2        | 10                          | 1                | 10                                |
 | 1        | 10                          | 1                | 10                                |
 | 7        | 10                          | 1                | 10                                |
+
+<br/>
+
+**4. What was the average distance travelled for each customer?**
+
+````sql
+
+WITH distance_cte AS
+(
+
+SELECT
+  customer_id,
+  CASE WHEN distance LIKE '%km' THEN TRIM('km' FROM distance) ELSE distance END AS distance
+FROM pizza_runner.customer_orders AS c
+JOIN pizza_runner.runner_orders AS r USING(order_id)
+WHERE distance <> 'null'
+
+)
+
+SELECT
+  customer_id,
+  ROUND(AVG(CAST(distance AS DECIMAL(4, 1))), 1) AS average_travel_distance_in_km 
+FROM distance_cte
+GROUP BY customer_id
+ORDER BY customer_id;
+
+````
+
+| customer_id | average_travel_distance_in_km |
+| ----------- | ----------------------------- |
+| 101         | 20.0                          |
+| 102         | 16.7                          |
+| 103         | 23.4                          |
+| 104         | 10.0                          |
+| 105         | 25.0                          |
