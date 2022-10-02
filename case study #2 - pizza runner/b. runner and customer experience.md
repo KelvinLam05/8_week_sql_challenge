@@ -152,7 +152,7 @@ FROM duration_per_order_cte;
 
 ````sql
 
-WITH duration_cte AS
+WITH distance_and_duration_cte AS
 (
 
 SELECT
@@ -174,7 +174,7 @@ SELECT
   runner_id,
   ROUND(AVG(distance), 1) AS distance,
   ROUND(AVG(duration)) / 60 AS hours
-FROM duration_cte
+FROM distance_and_duration_cte
 GROUP BY 
   order_id,
   runner_id
