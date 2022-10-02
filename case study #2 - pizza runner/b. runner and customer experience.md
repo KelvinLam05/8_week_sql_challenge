@@ -200,3 +200,51 @@ ORDER BY order_id;
 | 7        | 2         | 60                   |
 | 8        | 2         | 94                   |
 | 10       | 1         | 60                   |
+
+<br/>
+
+**7. What is the successful delivery percentage for each runner?**
+
+````sql
+
+WITH total_delivery_cte AS
+(
+
+SELECT 
+  runner_id,
+  COUNT(*) AS total_delivery
+FROM pizza_runner.customer_orders AS c
+JOIN pizza_runner.runner_orders AS r USING(order_id)
+GROUP BY runner_id
+
+),
+
+successful_delivery_cte AS
+(
+  
+SELECT 
+  runner_id,
+  COUNT(*) AS successful_delivery
+FROM pizza_runner.customer_orders AS c
+JOIN pizza_runner.runner_orders AS r USING(order_id)
+WHERE duration <> 'null'
+GROUP BY runner_id
+
+)
+
+SELECT
+  runner_id,
+  successful_delivery,
+  total_delivery,
+  ROUND((100.0 * successful_delivery / total_delivery), 1) AS successful_delivery_percentage
+FROM successful_delivery_cte 
+JOIN total_delivery_cte USING(runner_id)
+ORDER BY runner_id;
+
+````
+
+| runner_id | successful_delivery | total_delivery | successful_delivery_percentage |
+| --------- | ------------------- | -------------- | ------------------------------ |
+| 1         | 6                   | 6              | 100.0                          |
+| 2         | 5                   | 6              | 83.3                           |
+| 3         | 1                   | 2              | 50.0                           |
