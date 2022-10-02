@@ -104,3 +104,44 @@ ORDER BY customer_id;
 | 103         | 23.4                          |
 | 104         | 10.0                          |
 | 105         | 25.0                          |
+
+<br/>
+
+**5. What was the difference between the longest and shortest delivery times for all orders?**
+
+````sql
+
+WITH duration_cte AS
+(
+
+SELECT
+  order_id,
+  TO_NUMBER(duration, '99') AS duration
+FROM pizza_runner.customer_orders AS c
+JOIN pizza_runner.runner_orders AS r USING(order_id)
+WHERE duration <> 'null'
+  
+),
+
+duration_per_order_cte AS
+(
+
+SELECT 
+  order_id,
+  ROUND(AVG(duration)) AS duration
+FROM duration_cte
+GROUP BY order_id
+
+)
+
+SELECT
+  MAX(duration) AS longest_delivery_time_in_minutes,
+  MIN(duration) AS shortest_delivery_time_in_minutes,
+  MAX(duration) - MIN(duration) AS delivery_time_difference_in_minutes
+FROM duration_per_order_cte;
+
+````
+
+| longest_delivery_time_in_minutes | shortest_delivery_time_in_minutes | delivery_time_difference_in_minutes |
+| -------------------------------- | --------------------------------- | ----------------------------------- |
+| 40                               | 10                                | 30                                  |
