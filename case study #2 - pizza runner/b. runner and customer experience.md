@@ -145,3 +145,58 @@ FROM duration_per_order_cte;
 | longest_delivery_time_in_minutes | shortest_delivery_time_in_minutes | delivery_time_difference_in_minutes |
 | -------------------------------- | --------------------------------- | ----------------------------------- |
 | 40                               | 10                                | 30                                  |
+
+<br/>
+
+**6. What was the average speed for each runner for each delivery and do you notice any trend for these values?**
+
+````sql
+
+WITH duration_cte AS
+(
+
+SELECT
+  order_id,
+  runner_id,
+  TO_NUMBER(distance, '99D9') AS distance,
+  TO_NUMBER(duration, '99') AS duration
+FROM pizza_runner.customer_orders AS c
+JOIN pizza_runner.runner_orders AS r USING(order_id)
+WHERE duration <> 'null'
+  
+),
+
+hours_cte AS
+(
+
+SELECT 
+  order_id,
+  runner_id,
+  ROUND(AVG(distance), 1) AS distance,
+  ROUND(AVG(duration)) / 60 AS hours
+FROM duration_cte
+GROUP BY 
+  order_id,
+  runner_id
+
+)
+
+SELECT
+  order_id,
+  runner_id,
+  ROUND(distance / hours) AS runner_average_speed
+FROM hours_cte
+ORDER BY order_id;
+
+````
+
+| order_id | runner_id | runner_average_speed |
+| -------- | --------- | -------------------- |
+| 1        | 1         | 38                   |
+| 2        | 1         | 44                   |
+| 3        | 1         | 40                   |
+| 4        | 2         | 35                   |
+| 5        | 3         | 40                   |
+| 7        | 2         | 60                   |
+| 8        | 2         | 94                   |
+| 10       | 1         | 60                   |
