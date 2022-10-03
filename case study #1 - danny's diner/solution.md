@@ -100,6 +100,45 @@ LIMIT 1;
 
 **5. Which item was the most popular for each customer?**
 
+````sql
+
+WITH total_purchase_quantity_cte AS
+(
+
+SELECT 
+  customer_id,
+  product_name,
+  COUNT(*) AS total_purchase_quantity
+FROM dannys_diner.sales
+JOIN dannys_diner.menu USING(product_id)
+GROUP BY
+  customer_id,
+  product_id,
+  product_name
+  
+),
+
+ranking_cte AS
+(
+
+SELECT
+  customer_id,
+  product_name,
+  total_purchase_quantity,
+  DENSE_RANK() OVER(PARTITION BY customer_id ORDER BY total_purchase_quantity DESC) AS ranking
+FROM total_purchase_quantity_cte
+  
+)
+
+SELECT
+  customer_id,
+  product_name,
+  total_purchase_quantity
+FROM ranking_cte
+WHERE ranking = 1;    
+
+````
+
 **6. Which item was purchased first by the customer after they became a member?**
 
 ````sql
