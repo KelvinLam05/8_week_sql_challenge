@@ -42,4 +42,87 @@ JOIN pizza_runner.pizza_names AS n USING(pizza_id)
 
 **2. What was the most commonly added extra?**
 
+````sql
 
+WITH extras_cte AS
+(
+
+SELECT
+  order_id,	
+  UNNEST(STRING_TO_ARRAY(extras, ',')::INT[]) AS extras
+FROM pizza_runner.customer_orders
+WHERE extras <> 'null'
+  
+),
+
+number_of_pizzas_cte AS
+(
+
+SELECT
+  extras,
+  COUNT(*) AS number_of_pizzas
+FROM extras_cte
+GROUP BY extras
+  
+)
+
+SELECT
+  topping_name,
+  number_of_pizzas
+FROM number_of_pizzas_cte AS nop
+JOIN pizza_runner.pizza_toppings AS pt
+  ON nop.extras = pt.topping_id
+LIMIT 1;
+
+````
+
+| topping_name | number_of_pizzas |
+| ------------ | ---------------- |
+| Bacon        | 4                |
+
+<br/>
+
+**3. What was the most common exclusion?**
+
+````sql
+
+WITH exclusions_cte AS
+(
+
+SELECT
+  order_id,	
+  UNNEST(STRING_TO_ARRAY(exclusions, ',')::INT[]) AS exclusions
+FROM pizza_runner.customer_orders
+WHERE exclusions <> 'null'
+  
+),
+
+number_of_pizzas_cte AS
+(
+
+SELECT
+  exclusions,
+  COUNT(*) AS number_of_pizzas
+FROM exclusions_cte
+GROUP BY exclusions
+  
+)
+
+SELECT
+  topping_name,
+  number_of_pizzas
+FROM number_of_pizzas_cte AS nop
+JOIN pizza_runner.pizza_toppings AS pt
+  ON nop.exclusions = pt.topping_id
+ORDER BY number_of_pizzas DESC
+LIMIT 1;
+
+````
+
+| topping_name | number_of_pizzas |
+| ------------ | ---------------- |
+| Cheese       | 4                |
+
+<br/>
+
+**6. What is the total quantity of each ingredient used in all delivered pizzas sorted by most frequent first?**
