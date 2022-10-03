@@ -301,3 +301,7 @@ ORDER BY customer_id;
 | A           | 860                 |
 | B           | 940                 |
 | C           | 360                 |
+
+<br/>
+
+**10. In the first week after a customer joins the program (including their join date) they earn 2x points on all items, not just sushi - how many points do customer A and B have at the end of January?**
