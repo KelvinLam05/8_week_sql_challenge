@@ -139,6 +139,16 @@ WHERE ranking = 1;
 
 ````
 
+| customer_id | product_name | total_purchase_quantity |
+| ----------- | ------------ | ----------------------- |
+| A           | ramen        | 3                       |
+| B           | ramen        | 2                       |
+| B           | sushi        | 2                       |
+| B           | curry        | 2                       |
+| C           | ramen        | 3                       |
+
+<br/>
+
 **6. Which item was purchased first by the customer after they became a member?**
 
 ````sql
@@ -234,4 +244,60 @@ ORDER BY customer_id;
 
 **9. If each $1 spent equates to 10 points and sushi has a 2x points multiplier - how many points would each customer have?**
 
+````sql
 
+WITH points_cte AS
+(
+
+SELECT
+  product_id,
+  product_name,
+  price,
+  CASE WHEN product_name = 'sushi' THEN price * 20 ELSE price * 10 END AS points
+FROM dannys_diner.menu
+  
+),
+
+order_count_cte AS
+(
+
+SELECT 
+  customer_id,
+  product_name,
+  COUNT(*) AS order_count
+FROM dannys_diner.sales s
+JOIN dannys_diner.menu m USING(product_id)
+GROUP BY 
+  customer_id,
+  product_name
+  
+),
+
+points_earned_cte AS
+(
+
+SELECT
+  customer_id,
+  product_name,
+  order_count,
+  points,
+  order_count * points AS points_earned
+FROM order_count_cte o
+JOIN points_cte p USING(product_name)
+    
+)
+
+SELECT
+  customer_id,
+  SUM(points_earned) AS total_points_earned
+FROM points_earned_cte
+GROUP BY customer_id
+ORDER BY customer_id;
+
+````
+
+| customer_id | total_points_earned |
+| ----------- | ------------------- |
+| A           | 860                 |
+| B           | 940                 |
+| C           | 360                 |
