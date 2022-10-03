@@ -122,7 +122,3 @@ LIMIT 1;
 | topping_name | number_of_pizzas |
 | ------------ | ---------------- |
 | Cheese       | 4                |
-
-<br/>
-
-**6. What is the total quantity of each ingredient used in all delivered pizzas sorted by most frequent first?**
