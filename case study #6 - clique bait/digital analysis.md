@@ -31,3 +31,47 @@ FROM clique_bait.users;
 <br/>
 
 **3. What is the unique number of visits by all users per month?**
+
+````sql
+
+SELECT 
+  TO_CHAR(event_time, 'Month') AS month_name,
+  COUNT(DISTINCT visit_id) AS unique_number_of_visits
+FROM clique_bait.events 
+GROUP BY month_name;
+
+````
+
+<br/>
+
+**4. What is the number of events for each event type?**
+
+````sql
+
+SELECT 
+  event_name,
+  COUNT(*) AS number_of_events 
+FROM clique_bait.events 
+JOIN clique_bait.event_identifier USING(event_type)
+GROUP BY
+  event_type,
+  event_name
+ORDER BY number_of_events DESC;
+
+````
+
+| event_name    | number_of_events |
+| ------------- | ---------------- |
+| Page View     | 20928            |
+| Add to Cart   | 8451             |
+| Purchase      | 1777             |
+| Ad Impression | 876              |
+| Ad Click      | 702              |
+
+<br/>
+
+**5. What is the percentage of visits which have a purchase event?**
+
+````sql
+
+````
