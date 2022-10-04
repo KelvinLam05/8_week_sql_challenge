@@ -34,13 +34,34 @@ FROM clique_bait.users;
 
 ````sql
 
-SELECT 
+WITH unique_number_of_visits_cte AS
+(
+
+SELECT
+  TO_CHAR(event_time, 'MM') AS month_number,
   TO_CHAR(event_time, 'Month') AS month_name,
   COUNT(DISTINCT visit_id) AS unique_number_of_visits
 FROM clique_bait.events 
-GROUP BY month_name;
+GROUP BY 
+  month_number,
+  month_name
+  
+)
+
+SELECT
+  month_name,
+  unique_number_of_visits
+FROM unique_number_of_visits_cte
 
 ````
+
+| month_name | unique_number_of_visits |
+| ---------- | ----------------------- |
+| January    | 876                     |
+| February   | 1488                    |
+| March      | 916                     |
+| April      | 248                     |
+| May        | 36                      |
 
 <br/>
 
