@@ -113,6 +113,32 @@ WHERE event_type = 3;
 
 **6. What is the percentage of visits which view the checkout page but do not have a purchase event?**
 
+````sql
+
+WITH checkout_purchase AS 
+(
+
+SELECT 
+  visit_id,
+  MAX(CASE WHEN event_type = 1 AND page_id = 12 THEN 1 ELSE 0 END) AS checkout,
+  MAX(CASE WHEN event_type = 3 THEN 1 ELSE 0 END) AS purchase
+FROM clique_bait.events
+GROUP BY visit_id
+  
+)
+
+SELECT
+  100 - ROUND((100.0 * SUM(purchase) / SUM(checkout)), 1) AS percentage_checkout_view_with_no_purchase
+FROM checkout_purchase;
+
+````
+
+| percentage_checkout_view_with_no_purchase |
+| ----------------------------------------- |
+| 15.5                                      |
+
+<br/>
+
 **7. What are the top 3 pages by number of views?**
 
 ````sql
@@ -159,7 +185,3 @@ GROUP BY product_category;
 | Shellfish        | 6204            | 3792                |
 | Fish             | 4633            | 2789                |
 | Luxury           | 3032            | 1870                |
-
-<br/>
-
-**9. What are the top 3 products by purchases?**
