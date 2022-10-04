@@ -74,4 +74,50 @@ ORDER BY number_of_events DESC;
 
 ````sql
 
+SELECT
+  ROUND(100.0 * COUNT(DISTINCT visit_id) / 
+    (SELECT COUNT(DISTINCT visit_id) 
+    FROM clique_bait.events), 1) AS percentage_purchase
+FROM clique_bait.events
+JOIN clique_bait.event_identifier USING(event_type)
+WHERE event_type = 3;
+
 ````
+
+| percentage_purchase |
+| ------------------- |
+| 49.9                |
+
+<br/>
+
+**6. What is the percentage of visits which view the checkout page but do not have a purchase event?**
+
+**7. What are the top 3 pages by number of views?**
+
+````sql
+
+SELECT
+  page_name,
+  COUNT(*) AS number_of_views
+FROM clique_bait.events  
+JOIN clique_bait.page_hierarchy USING(page_id)
+WHERE event_type = 1
+GROUP BY
+  page_id,
+  page_name
+ORDER BY number_of_views DESC
+LIMIT 3;
+
+````
+
+| page_name    | number_of_views |
+| ------------ | --------------- |
+| All Products | 3174            |
+| Checkout     | 2103            |
+| Home Page    | 1782            |
+
+<br/>
+
+**8. What is the number of views and cart adds for each product category?**
+
+**9. What are the top 3 products by purchases?**
