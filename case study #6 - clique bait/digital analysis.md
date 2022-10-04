@@ -141,4 +141,25 @@ LIMIT 3;
 
 **8. What is the number of views and cart adds for each product category?**
 
+````sql
+
+SELECT
+  product_category,
+  SUM(CASE WHEN event_type = 1 THEN 1 ELSE 0 END) AS number_of_views,
+  SUM(CASE WHEN event_type = 2 THEN 1 ELSE 0 END) AS number_of_cart_adds
+FROM clique_bait.events  
+JOIN clique_bait.page_hierarchy USING(page_id)
+WHERE product_category IS NOT NULL
+GROUP BY product_category;
+
+````
+
+| product_category | number_of_views | number_of_cart_adds |
+| ---------------- | --------------- | ------------------- |
+| Shellfish        | 6204            | 3792                |
+| Fish             | 4633            | 2789                |
+| Luxury           | 3032            | 1870                |
+
+<br/>
+
 **9. What are the top 3 products by purchases?**
