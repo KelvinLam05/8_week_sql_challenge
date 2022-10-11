@@ -72,7 +72,7 @@ GROUP BY
 ```` sql
 
 SELECT 
-  ROUND(AVG("end_date" - "start_date")) AS average_days
+  ROUND(AVG(end_date - start_date)) AS average_days
 FROM customer_nodes
 WHERE end_date <> '9999-12-31';
 
@@ -81,3 +81,28 @@ WHERE end_date <> '9999-12-31';
 | average_days |
 | ------------ |
 | 15           |
+
+<br/>
+
+**5. What is the median, 80th and 95th percentile for this same reallocation days metric for each region?**
+
+```` sql
+
+SELECT
+  region_id,
+  PERCENTILE_DISC(0.50) WITHIN GROUP (ORDER BY end_date - start_date) AS "50th percentile",
+  PERCENTILE_DISC(0.80) WITHIN GROUP (ORDER BY end_date - start_date) AS "80th percentile",
+  PERCENTILE_DISC(0.95) WITHIN GROUP (ORDER BY end_date - start_date) AS "95th percentile"
+FROM data_bank.customer_nodes
+WHERE end_date <> '9999-12-31'
+GROUP BY region_id;
+
+````
+
+| region_id | 50th percentile | 80th percentile | 95th percentile |
+| --------- | --------------- | --------------- | --------------- |
+| 1         | 15              | 23              | 28              |
+| 2         | 15              | 23              | 28              |
+| 3         | 15              | 24              | 28              |
+| 4         | 15              | 23              | 28              |
+| 5         | 15              | 24              | 28              |
