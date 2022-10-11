@@ -130,7 +130,7 @@ SELECT
   percentile_ranking
 FROM fresh_segments.interest_map ma
 JOIN fresh_segments.interest_metrics me
-	ON ma.id = CAST(me.interest_id AS INT)
+  ON ma.id = CAST(me.interest_id AS INT)
 WHERE interest_id = '21246' AND month_year IS NOT NULL;
 
 ````
@@ -147,3 +147,22 @@ WHERE interest_id = '21246' AND month_year IS NOT NULL;
 | 21246       | Readers of El Salvadoran Content | People reading news from El Salvadoran media sources. | 2018-06-11T17:50:04.000Z | 2018-06-11T17:50:04.000Z | 2      | 2019  | 02-2019    | 1.84        | 0.68        | 1109    | 1.07               |
 | 21246       | Readers of El Salvadoran Content | People reading news from El Salvadoran media sources. | 2018-06-11T17:50:04.000Z | 2018-06-11T17:50:04.000Z | 3      | 2019  | 03-2019    | 1.75        | 0.67        | 1123    | 1.14               |
 | 21246       | Readers of El Salvadoran Content | People reading news from El Salvadoran media sources. | 2018-06-11T17:50:04.000Z | 2018-06-11T17:50:04.000Z | 4      | 2019  | 04-2019    | 1.58        | 0.63        | 1092    | 0.64               |
+
+<br/>
+
+**7. Are there any records in your joined table where the month_year value is before the created_at value from the fresh_segments.interest_map table? Do you think these values are valid and why?**
+
+```` sql
+
+SELECT
+COUNT(*) AS records
+FROM fresh_segments.interest_map ma
+JOIN fresh_segments.interest_metrics me
+  ON ma.id = CAST(me.interest_id AS INT)
+WHERE TO_CHAR(TO_DATE(month_year, 'MM-YYYY'), 'YYYY-MM-DD') :: DATE < created_at :: TIMESTAMP :: DATE;
+
+````
+
+| records |
+| ------- |
+| 188     |
