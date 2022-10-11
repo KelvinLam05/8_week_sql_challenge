@@ -92,3 +92,58 @@ FROM fresh_segments.interest_metrics;
 | 42010               |
 
 There are 7 ids that did not appear in interest_metrics.
+
+<br/>
+
+**5. Summarise the id values in the fresh_segments.interest_map by its total record count in this table**
+
+```` sql
+
+SELECT 
+  COUNT(id) AS record_count  
+FROM fresh_segments.interest_map;
+
+````
+
+| record_count |
+| ------------ |
+| 1209         |
+
+<br/>
+
+**6. What sort of table join should we perform for our analysis and why? Check your logic by checking the rows where 'interest_id = 21246' in your joined output and include all columns from fresh_segments.interest_metrics and all columns from fresh_segments.interest_map except from the id column.**
+
+```` sql
+
+SELECT 
+  interest_id,
+  interest_name,
+  interest_summary,
+  created_at,
+  last_modified,
+  _month,	
+  _year,	
+  month_year,	
+  composition,
+  index_value,
+  ranking,
+  percentile_ranking
+FROM fresh_segments.interest_map ma
+JOIN fresh_segments.interest_metrics me
+	ON ma.id = CAST(me.interest_id AS INT)
+WHERE interest_id = '21246' AND month_year IS NOT NULL;
+
+````
+
+| interest_id | interest_name                    | interest_summary                                      | _month | _year | month_year | composition | index_value | ranking | percentile_ranking |
+| ----------- | -------------------------------- | ----------------------------------------------------- | ------ | ----- | ---------- | ----------- | ----------- | ------- | ------------------ |
+| 21246       | Readers of El Salvadoran Content | People reading news from El Salvadoran media sources. | 7      | 2018  | 07-2018    | 2.26        | 0.65        | 722     | 0.96               |
+| 21246       | Readers of El Salvadoran Content | People reading news from El Salvadoran media sources. | 8      | 2018  | 08-2018    | 2.13        | 0.59        | 765     | 0.26               |
+| 21246       | Readers of El Salvadoran Content | People reading news from El Salvadoran media sources. | 9      | 2018  | 09-2018    | 2.06        | 0.61        | 774     | 0.77               |
+| 21246       | Readers of El Salvadoran Content | People reading news from El Salvadoran media sources. | 10     | 2018  | 10-2018    | 1.74        | 0.58        | 855     | 0.23               |
+| 21246       | Readers of El Salvadoran Content | People reading news from El Salvadoran media sources. | 11     | 2018  | 11-2018    | 2.25        | 0.78        | 908     | 2.16               |
+| 21246       | Readers of El Salvadoran Content | People reading news from El Salvadoran media sources. | 12     | 2018  | 12-2018    | 1.97        | 0.7         | 983     | 1.21               |
+| 21246       | Readers of El Salvadoran Content | People reading news from El Salvadoran media sources. | 1      | 2019  | 01-2019    | 2.05        | 0.76        | 954     | 1.95               |
+| 21246       | Readers of El Salvadoran Content | People reading news from El Salvadoran media sources. | 2      | 2019  | 02-2019    | 1.84        | 0.68        | 1109    | 1.07               |
+| 21246       | Readers of El Salvadoran Content | People reading news from El Salvadoran media sources. | 3      | 2019  | 03-2019    | 1.75        | 0.67        | 1123    | 1.14               |
+| 21246       | Readers of El Salvadoran Content | People reading news from El Salvadoran media sources. | 4      | 2019  | 04-2019    | 1.58        | 0.63        | 1092    | 0.64               |
